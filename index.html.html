@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Premium - Perpustakaan Digital UIN Antasari</title>
+    <!-- Font Modern -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #07058a;
+            --secondary-blue: #1e40af;
+            --accent-blue: #3b82f6;
+            --primary-gold: #fbbf24;
+            --secondary-gold: #f59e0b;
+            --dark-gold: #d97706;
+            --bg-light: #fefce8;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #07058a 0%, #1e3a8a 40%, #f59e0b 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #1e293b;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            --primary-blue: #1e3a8a;
+            --secondary-blue: #3b82f6;
+            --accent-blue: #60a5fa;
+            --primary-gold: #fbbf24;
+            --secondary-gold: #f59e0b;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: #e2e8f0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+
+        body.mobile-mode .container {
+            max-width: 480px;
+        }
+
+        body.mobile-mode .book-title-cell {
+            flex-direction: column;
+            text-align: center;
+            gap: 15px;
+        }
+
+        body.mobile-mode .control-panel {
+            flex-direction: column;
+        }
+
+        body.mobile-mode .search-box {
+            min-width: 100%;
+        }
+
+        body.mobile-mode .section-header {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        body.mobile-mode .stats-bar {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        body.mobile-mode .book-table thead {
+            display: none;
+        }
+
+        body.mobile-mode .book-row {
+            display: block;
+            margin-bottom: 20px;
+            border: 2px solid var(--primary-gold);
+        }
+
+        body.mobile-mode .book-row td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        body.mobile-mode .book-row td::before {
+            content: attr(data-label);
+            font-weight: 700;
+            color: var(--secondary-blue);
+            margin-right: 15px;
+        }
+
+        body.mobile-mode .book-row td:first-child::before { content: "No:"; }
+        body.mobile-mode .book-row td:nth-child(2)::before { content: "Buku:"; }
+        body.mobile-mode .book-row td:nth-child(3)::before { content: "Tahun:"; }
+        body.mobile-mode .book-row td:nth-child(4)::before { content: "Kategori:"; }
+        body.mobile-mode .book-row td:last-child::before { content: "Aksi:"; }
+
+        body.mobile-mode .number-badge {
+            margin: 0;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            border: 3px solid var(--primary-gold);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .header {
+            background: rgba(30, 41, 59, 0.98);
+            border-color: var(--primary-gold);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-gold), var(--secondary-gold), var(--dark-gold));
+        }
+
+        .university-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            border: 2px solid var(--primary-gold);
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 48px;
+            color: #0f172a;
+            margin-bottom: 10px;
+            font-weight: 800;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode h1 {
+            color: #f1f5f9;
+        }
+
+        .highlight {
+            color: var(--secondary-gold);
+            position: relative;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .subtitle {
+            color: #94a3b8;
+        }
+
+        /* Settings Panel */
+        .settings-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            max-width: 300px;
+        }
+
+        .toggle-btn, .action-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary-gold);
+            padding: 12px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            text-decoration: none;
+            color: #0f172a;
+        }
+
+        body.dark-mode .toggle-btn,
+        body.dark-mode .action-btn {
+            background: rgba(30, 41, 59, 0.95);
+            color: #e2e8f0;
+            border-color: var(--primary-gold);
+        }
+
+        .toggle-btn:hover, .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .toggle-btn i, .action-btn i {
+            font-size: 16px;
+        }
+
+        .toggle-btn.dark-mode-active {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #fbbf24;
+        }
+
+        .toggle-btn.mobile-mode-active {
+            background: linear-gradient(135deg, var(--secondary-gold), var(--dark-gold));
+            color: #0f172a;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px 35px;
+            background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+            border-radius: 20px;
+            color: white;
+            min-width: 140px;
+            border: 3px solid var(--primary-gold);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(30, 64, 175, 0.3);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(30, 64, 175, 0.4);
+        }
+
+        .stat-number {
+            font-family: 'Outfit', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--primary-gold);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.95;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2);
+            border: 2px solid var(--primary-gold);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .control-panel {
+            background: rgba(30, 41, 59, 0.98);
+            border-color: var(--primary-gold);
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-gold);
+            font-size: 18px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+
+        body.dark-mode .search-input {
+            background: #1e293b;
+            border-color: #475569;
+            color: #e2e8f0;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--secondary-gold);
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+        }
+
+        .filter-select, .sort-select {
+            padding: 15px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f8fafc;
+            cursor: pointer;
+            min-width: 150px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .filter-select,
+        body.dark-mode .sort-select {
+            background: #1e293b;
+            border-color: #475569;
+            color: #e2e8f0;
+        }
+
+        .filter-select:focus, .sort-select:focus {
+            outline: none;
+            border-color: var(--secondary-gold);
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, var(--primary-gold), var(--secondary-gold));
+            color: #0f172a;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+            background: linear-gradient(135deg, var(--secondary-gold), var(--dark-gold));
+        }
+
+        /* Table Section */
+        .table-section {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--primary-gold);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .table-section {
+            background: rgba(30, 41, 59, 0.98);
+            border-color: var(--primary-gold);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 26px;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .section-title {
+            color: #f1f5f9;
+        }
+
+        .section-title i {
+            color: var(--secondary-gold);
+            font-size: 30px;
+        }
+
+        .result-count {
+            background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 2px solid var(--primary-gold);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            background: white;
+            border: 2px solid var(--primary-gold);
+            color: #0f172a;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .page-btn {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-color: var(--primary-gold);
+        }
+
+        .page-btn:hover, .page-btn.active {
+            background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+            color: white;
+            border-color: var(--primary-gold);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            font-weight: 600;
+            color: #64748b;
+            padding: 0 15px;
+        }
+
+        body.dark-mode .page-info {
+            color: #94a3b8;
+        }
+
+        /* Table Styling */
+        .book-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 12px;
+        }
+
+        .book-table thead th {
+            background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+            color: white;
+            padding: 18px 20px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+        }
+
+        .book-table thead th:first-child {
+            border-radius: 15px 0 0 15px;
+            width: 80px;
+            text-align: center;
+        }
+
+        .book-table thead th:last-child {
+            border-radius: 0 15px 15px 0;
+        }
+
+        .book-row {
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-radius: 15px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        body.dark-mode .book-row {
+            background: #1e293b;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .book-row:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15);
+            border: 2px solid var(--primary-gold);
+        }
+
+        .book-row td {
+            padding: 20px;
+            border: none;
+            vertical-align: middle;
+        }
+
+        .book-row td:first-child {
+            border-radius: 15px 0 0 15px;
+        }
+
+        .book-row td:last-child {
+            border-radius: 0 15px 15px 0;
+        }
+
+        .number-badge {
+            background: linear-gradient(135deg, var(--primary-gold), var(--secondary-gold));
+            color: #0f172a;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+            font-family: 'Outfit', sans-serif;
+            margin: 0 auto;
+            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+        }
+
+        .book-title-cell {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .book-cover {
+            width: 75px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+
+        .book-cover:hover {
+            transform: scale(1.1);
+            border-color: var(--secondary-gold);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+        }
+
+        .book-info h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 17px;
+            color: #0f172a;
+            margin-bottom: 6px;
+            font-weight: 700;
+            line-height: 1.4;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .book-info h3 {
+            color: #f1f5f9;
+        }
+
+        .book-info .author {
+            font-size: 14px;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .book-info .author {
+            color: #94a3b8;
+        }
+
+        .book-info .author i {
+            color: var(--secondary-gold);
+        }
+
+        .year-badge {
+            background: #dbeafe;
+            color: var(--secondary-blue);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            border: 2px solid #93c5fd;
+            display: inline-block;
+        }
+
+        body.dark-mode .year-badge {
+            background: #1e40af;
+            color: #dbeafe;
+            border-color: #3b82f6;
+        }
+
+        .category-badge {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #92400e;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 13px;
+            border: 2px solid var(--primary-gold);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(251, 191, 36, 0.2);
+        }
+
+        .category-badge i {
+            color: var(--secondary-gold);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-action {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+
+        .btn-edit:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .btn-delete:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .no-result {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .no-result {
+            color: #94a3b8;
+        }
+
+        .no-result i {
+            font-size: 48px;
+            color: var(--primary-gold);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 3px solid var(--primary-gold);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .modal-content {
+            background: #1e293b;
+            border-color: var(--primary-gold);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        body.dark-mode .modal-header {
+            border-color: #475569;
+        }
+
+        .modal-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .modal-title {
+            color: #f1f5f9;
+        }
+
+        .modal-title i {
+            color: var(--secondary-gold);
+        }
+
+        .btn-close {
+            background: #f1f5f9;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        body.dark-mode .btn-close {
+            background: #334155;
+            color: #94a3b8;
+        }
+
+        .btn-close:hover {
+            background: #fee2e2;
+            color: #ef4444;
+            transform: rotate(90deg);
+        }
+
+        body.dark-mode .btn-close:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #0f172a;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .form-label {
+            color: #e2e8f0;
+        }
+
+        .form-label span {
+            color: #ef4444;
+        }
+
+        .form-input, .form-select, .form-file {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+
+        body.dark-mode .form-input,
+        body.dark-mode .form-select,
+        body.dark-mode .form-file {
+            background: #0f172a;
+            border-color: #475569;
+            color: #e2e8f0;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--secondary-gold);
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+        }
+
+        .form-file {
+            padding: 10px;
+        }
+
+        .form-file::file-selector-button {
+            background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary-gold), var(--secondary-gold));
+            color: #0f172a;
+            border: none;
+            padding: 15px 24px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-secondary {
+            flex: 1;
+            background: #f1f5f9;
+            color: #64748b;
+            border: 2px solid #e2e8f0;
+            padding: 15px 24px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body.dark-mode .btn-secondary {
+            background: #334155;
+            color: #94a3b8;
+            border-color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        body.dark-mode .btn-secondary:hover {
+            background: #475569;
+            color: #e2e8f0;
+        }
+
+        /* Delete Confirmation Modal */
+        .delete-modal .modal-content {
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .delete-icon {
+            font-size: 64px;
+            color: #ef4444;
+            margin-bottom: 20px;
+        }
+
+        .delete-text {
+            font-size: 18px;
+            color: #64748b;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        body.dark-mode .delete-text {
+            color: #94a3b8;
+        }
+
+        .delete-text strong {
+            color: #0f172a;
+            display: block;
+            margin-top: 10px;
+            font-size: 20px;
+        }
+
+        body.dark-mode .delete-text strong {
+            color: #f1f5f9;
+        }
+
+        /* Image Preview */
+        .image-preview {
+            width: 100%;
+            max-width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-top: 10px;
+            border: 2px solid var(--primary-gold);
+            display: none;
+        }
+
+        .image-preview.show {
+            display: block;
+        }
+
+        /* Toast Notification */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: white;
+            border-radius: 12px;
+            padding: 16px 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-left: 4px solid;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            animation: slideInRight 0.3s ease;
+            font-weight: 600;
+        }
+
+        body.dark-mode .toast {
+            background: #1e293b;
+            color: #e2e8f0;
+        }
+
+        .toast.success {
+            border-left-color: #10b981;
+        }
+
+        .toast.error {
+            border-left-color: #ef4444;
+        }
+
+        .toast.info {
+            border-left-color: #3b82f6;
+        }
+
+        .toast i {
+            font-size: 20px;
+        }
+
+        .toast.success i { color: #10b981; }
+        .toast.error i { color: #ef4444; }
+        .toast.info i { color: #3b82f6; }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        .toast.hiding {
+            animation: slideOutRight 0.3s ease forwards;
+        }
+
+        /* Footer */
+        .footer-card {
+            background: linear-gradient(135deg, #0f172a, var(--secondary-blue));
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            color: white;
+            border: 4px solid var(--primary-gold);
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(251, 191, 36, 0.1);
+            border-radius: 50%;
+        }
+
+        .footer-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--primary-gold);
+            position: relative;
+            z-index: 1;
+        }
+
+        .portal-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--primary-gold), var(--secondary-gold));
+            color: #0f172a;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+            position: relative;
+            z-index: 1;
+            margin-top: 10px;
+        }
+
+        .portal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(245, 158, 11, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            h1 { font-size: 36px; }
+            .control-panel { flex-direction: column; }
+            .search-box { min-width: 100%; }
+            .book-title-cell { flex-direction: column; text-align: center; }
+            .section-header { flex-direction: column; text-align: center; }
+            .settings-panel {
+                position: relative;
+                top: auto;
+                right: auto;
+                justify-content: center;
+                margin-bottom: 20px;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header { padding: 30px 20px; }
+            .table-section { padding: 25px; }
+            .modal-content { padding: 30px 20px; }
+            .form-actions { flex-direction: column; }
+            .action-buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .btn-action {
+                width: 100%;
+                height: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Settings Panel -->
+    <div class="settings-panel">
+        <button class="toggle-btn" id="darkModeToggle" onclick="toggleDarkMode()">
+            <i class="fas fa-moon"></i>
+            <span>Dark Mode</span>
+        </button>
+        <button class="toggle-btn" id="viewModeToggle" onclick="toggleViewMode()">
+            <i class="fas fa-mobile-alt"></i>
+            <span>Mode HP</span>
+        </button>
+        <button class="action-btn" onclick="exportData()" title="Export Data">
+            <i class="fas fa-download"></i>
+        </button>
+        <button class="action-btn" onclick="document.getElementById('importFile').click()" title="Import Data">
+            <i class="fas fa-upload"></i>
+        </button>
+        <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(this)">
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="university-badge">UIN Antasari Banjarbaru</div>
+            <h1>Perpustakaan <span class="highlight">Digital</span></h1>
+            <p class="subtitle">Selamat datang! Platform ini dirancang untuk memberikan akses ke berbagai literatur dan informasi secara cepat dan efisien.</p>
+            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalBooks">3</div>
+                    <div class="stat-label">Koleksi Buku</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Jurnal Digital</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalAccess">3</div>
+                    <div class="stat-label">Akses Online</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" id="searchInput" placeholder="Cari berdasarkan judul, penulis, atau kategori...">
+            </div>
+            <select class="filter-select" id="filterSelect">
+                <option value="all">Semua Kategori</option>
+                <option value="Manajemen">Manajemen</option>
+                <option value="Sumber Daya">Sumber Daya</option>
+                <option value="Self-Development">Self-Development</option>
+                <option value="Teknologi">Teknologi</option>
+                <option value="Fiksi">Fiksi</option>
+                <option value="Non-Fiksi">Non-Fiksi</option>
+                <option value="Lainnya">Lainnya</option>
+            </select>
+            <select class="sort-select" id="sortSelect" onchange="sortBooks()">
+                <option value="default">Urutkan...</option>
+                <option value="title-asc">Judul (A-Z)</option>
+                <option value="title-desc">Judul (Z-A)</option>
+                <option value="year-desc">Tahun (Terbaru)</option>
+                <option value="year-asc">Tahun (Terlama)</option>
+            </select>
+            <button class="btn-add" onclick="openModal()">
+                <i class="fas fa-plus"></i>
+                Tambah Koleksi
+            </button>
+        </div>
+
+        <!-- Table Section -->
+        <div class="table-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-book-open"></i>
+                    Katalog Buku Kami
+                </h2>
+                <span class="result-count" id="resultCount">Menampilkan 3 buku</span>
+            </div>
+            
+            <table class="book-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Detail Buku</th>
+                        <th>Tahun</th>
+                        <th>Kategori</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="bookTableBody">
+                    <!-- Data akan di-render oleh JavaScript -->
+                </tbody>
+            </table>
+            
+            <div class="no-result" id="noResult" style="display: none;">
+                <i class="fas fa-search"></i>
+                <p>Tidak ada buku yang ditemukan sesuai pencarian Anda.</p>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination" id="pagination">
+                <!-- Pagination akan di-render oleh JavaScript -->
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-card">
+            <h2 class="footer-title"><i class="fas fa-code"></i> Oleh Akhmad Da'wah</h2>
+            <p style="margin-bottom: 10px; opacity: 0.9; position: relative; z-index: 1;">Informasi lebih lanjut? Kunjungi profil saya</p>
+            <a href="https://github.com/AhnRahmad" target="_blank" class="portal-btn">
+                <i class="fab fa-github"></i>
+                Kunjungi Portal Utama
+            </a>
+        </div>
+    </div>
+
+    <!-- Modal Tambah/Edit Koleksi -->
+    <div class="modal-overlay" id="addModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">
+                    <i class="fas fa-book-medical"></i>
+                    Tambah Koleksi Baru
+                </h3>
+                <button class="btn-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="addBookForm" onsubmit="saveBook(event)">
+                <input type="hidden" id="editBookId" value="">
+                
+                <div class="form-group">
+                    <label class="form-label">Judul Buku <span>*</span></label>
+                    <input type="text" class="form-input" id="bookTitle" placeholder="Masukkan judul buku" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Penulis <span>*</span></label>
+                    <input type="text" class="form-input" id="bookAuthor" placeholder="Masukkan nama penulis" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Tahun Terbit <span>*</span></label>
+                    <input type="number" class="form-input" id="bookYear" placeholder="Contoh: 2024" min="1900" max="2099" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Kategori <span>*</span></label>
+                    <select class="form-select" id="bookCategory" required>
+                        <option value="">Pilih Kategori</option>
+                        <option value="Manajemen">Manajemen</option>
+                        <option value="Sumber Daya">Sumber Daya</option>
+                        <option value="Self-Development">Self-Development</option>
+                        <option value="Teknologi">Teknologi</option>
+                        <option value="Fiksi">Fiksi</option>
+                        <option value="Non-Fiksi">Non-Fiksi</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Gambar Cover (Opsional)</label>
+                    <input type="file" class="form-file" id="bookCover" accept="image/*" onchange="previewImage(this)">
+                    <img id="imagePreview" class="image-preview" alt="Preview">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeModal()">
+                        <i class="fas fa-times-circle"></i> Batal
+                    </button>
+                    <button type="submit" class="btn-primary" id="saveBtn">
+                        <i class="fas fa-save"></i> Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Delete Confirmation -->
+    <div class="modal-overlay delete-modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="delete-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="modal-title" style="justify-content: center; margin-bottom: 15px;">
+                Hapus Buku?
+            </h3>
+            <p class="delete-text">
+                Apakah Anda yakin ingin menghapus buku ini?<br>
+                <strong id="deleteBookTitle">Judul Buku</strong>
+            </p>
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" onclick="closeDeleteModal()">
+                    <i class="fas fa-times"></i> Batal
+                </button>
+                <button type="button" class="btn-primary" style="background: linear-gradient(135deg, #ef4444, #dc2626); color: white;" onclick="confirmDelete()">
+                    <i class="fas fa-trash"></i> Hapus
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Default books data
+        const defaultBooks = [
+            {
+                id: 1,
+                title: "Pengantar Manajemen 3 in 1 untuk Mahasiswa dan Umum",
+                author: "Andri S.E & Endang S.E",
+                year: "2023",
+                category: "Manajemen",
+                cover: "https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=200",
+                fullCover: "https://tirtabuanamedia.co.id/wp-content/uploads/2022/12/Pengantar-Manajemen-3in1-untuk-Mahasiswa-dan-umum.jpg"
+            },
+            {
+                id: 2,
+                title: "Manajemen Sumber Perairan",
+                author: "Supriharyono",
+                year: "2019",
+                category: "Sumber Daya",
+                cover: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=200",
+                fullCover: "https://images.tokopedia.net/img/cache/500-square/VqbcmM/2020/10/13/33549709-6846-4ab9-8738-6fee51c03247.jpg"
+            },
+            {
+                id: 3,
+                title: "Atomic Habits: Perubahan Kecil yang Memberikan Hasil Luar Biasa",
+                author: "James Clear",
+                year: "2018",
+                category: "Self-Development",
+                cover: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=200",
+                fullCover: "https://jamesclear.com/wp-content/uploads/2019/04/atomicHC-flat-1-e1556572683325.jpg"
+            }
+        ];
+
+        // Load books from localStorage or use default
+        let books = JSON.parse(localStorage.getItem('libraryBooks')) || [...defaultBooks];
+        let deleteBookId = null;
+        let isEditMode = false;
+        let currentImageBase64 = null;
+
+        // Pagination settings
+        const ITEMS_PER_PAGE = 5;
+        let currentPage = 1;
+        let filteredBooks = [...books];
+
+        // Toggle Dark Mode
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.getElementById('darkModeToggle');
+            const isDark = document.body.classList.contains('dark-mode');
+            
+            if (isDark) {
+                btn.innerHTML = '<i class="fas fa-sun"></i><span>Light Mode</span>';
+                btn.classList.add('dark-mode-active');
+            } else {
+                btn.innerHTML = '<i class="fas fa-moon"></i><span>Dark Mode</span>';
+                btn.classList.remove('dark-mode-active');
+            }
+            
+            localStorage.setItem('darkMode', isDark);
+        }
+
+        // Toggle View Mode (Mobile/Desktop)
+        function toggleViewMode() {
+            document.body.classList.toggle('mobile-mode');
+            const btn = document.getElementById('viewModeToggle');
+            const isMobile = document.body.classList.contains('mobile-mode');
+            
+            if (isMobile) {
+                btn.innerHTML = '<i class="fas fa-desktop"></i><span>Mode PC</span>';
+                btn.classList.add('mobile-mode-active');
+            } else {
+                btn.innerHTML = '<i class="fas fa-mobile-alt"></i><span>Mode HP</span>';
+                btn.classList.remove('mobile-mode-active');
+            }
+            
+            localStorage.setItem('mobileMode', isMobile);
+        }
+
+        // Check saved preferences
+        window.onload = function() {
+            if (localStorage.getItem('darkMode') === 'true') {
+                toggleDarkMode();
+            }
+            if (localStorage.getItem('mobileMode') === 'true') {
+                toggleViewMode();
+            }
+            applyFilters();
+        };
+
+        // Save to localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('libraryBooks', JSON.stringify(books));
+        }
+
+        // Preview image before upload
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.add('show');
+                    currentImageBase64 = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Sort books
+        function sortBooks() {
+            const sortValue = document.getElementById('sortSelect').value;
+            
+            switch(sortValue) {
+                case 'title-asc':
+                    filteredBooks.sort((a, b) => a.title.localeCompare(b.title));
+                    break;
+                case 'title-desc':
+                    filteredBooks.sort((a, b) => b.title.localeCompare(a.title));
+                    break;
+                case 'year-desc':
+                    filteredBooks.sort((a, b) => parseInt(b.year) - parseInt(a.year));
+                    break;
+                case 'year-asc':
+                    filteredBooks.sort((a, b) => parseInt(a.year) - parseInt(b.year));
+                    break;
+                default:
+                    filteredBooks = [...books];
+                    applyFilters(false);
+                    return;
+            }
+            
+            currentPage = 1;
+            renderTable();
+        }
+
+        // Apply filters and search
+        function applyFilters(resetPage = true) {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const categoryFilter = document.getElementById('filterSelect').value;
+            
+            filteredBooks = books.filter(book => {
+                const matchSearch = book.title.toLowerCase().includes(searchTerm) || 
+                                   book.author.toLowerCase().includes(searchTerm) ||
+                                   book.category.toLowerCase().includes(searchTerm);
+                const matchCategory = categoryFilter === 'all' || book.category === categoryFilter;
+                
+                return matchSearch && matchCategory;
+            });
+            
+            if (resetPage) currentPage = 1;
+            renderTable();
+        }
+
+        // Render table with pagination
+        function renderTable() {
+            const tbody = document.getElementById('bookTableBody');
+            const noResult = document.getElementById('noResult');
+            const resultCount = document.getElementById('resultCount');
+            
+            tbody.innerHTML = '';
+            
+            if (filteredBooks.length === 0) {
+                noResult.style.display = 'block';
+                document.getElementById('pagination').style.display = 'none';
+                resultCount.textContent = 'Tidak ada buku ditemukan';
+                return;
+            }
+            
+            noResult.style.display = 'none';
+            document.getElementById('pagination').style.display = 'flex';
+            resultCount.textContent = `Menampilkan ${filteredBooks.length} buku`;
+            
+            // Pagination logic
+            const totalPages = Math.ceil(filteredBooks.length / ITEMS_PER_PAGE);
+            const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
+            const pageBooks = filteredBooks.slice(startIndex, endIndex);
+            
+            pageBooks.forEach((book, index) => {
+                const actualIndex = startIndex + index;
+                const row = document.createElement('tr');
+                row.className = 'book-row';
+                row.innerHTML = `
+                    <td data-label="No:">
+                        <div class="number-badge">${actualIndex + 1}</div>
+                    </td>
+                    <td data-label="Buku:">
+                        <div class="book-title-cell">
+                            <a href="${book.fullCover}" target="_blank">
+                                <img src="${book.cover}" alt="${book.title}" class="book-cover" onerror="this.src='https://via.placeholder.com/75x100/fbbf24/92400e?text=No+Image'">
+                            </a>
+                            <div class="book-info">
+                                <h3>${book.title}</h3>
+                                <div class="author">
+                                    <i class="fas fa-user-edit"></i> ${book.author}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td data-label="Tahun:">
+                        <span class="year-badge">${book.year}</span>
+                    </td>
+                    <td data-label="Kategori:">
+                        <span class="category-badge">
+                            <i class="fas fa-tag"></i>
+                            ${book.category}
+                        </span>
+                    </td>
+                    <td data-label="Aksi:">
+                        <div class="action-buttons">
+                            <button class="btn-action btn-edit" onclick="editBook(${book.id})" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-action btn-delete" onclick="deleteBook(${book.id})" title="Hapus">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+            
+            renderPagination(totalPages);
+            
+            // Update stats
+            document.getElementById('totalBooks').textContent = books.length;
+            document.getElementById('totalAccess').textContent = books.length;
+        }
+
+        // Render pagination buttons
+        function renderPagination(totalPages) {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            
+            if (totalPages <= 1) {
+                pagination.style.display = 'none';
+                return;
+            }
+            
+            // Previous button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'page-btn';
+            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderTable();
+                }
+            };
+            pagination.appendChild(prevBtn);
+            
+            // Page info
+            const pageInfo = document.createElement('span');
+            pageInfo.className = 'page-info';
+            pageInfo.textContent = `Halaman ${currentPage} dari ${totalPages}`;
+            pagination.appendChild(pageInfo);
+            
+            // Next button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'page-btn';
+            nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderTable();
+                }
+            };
+            pagination.appendChild(nextBtn);
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', () => applyFilters());
+        document.getElementById('filterSelect').addEventListener('change', () => applyFilters());
+
+        // Modal functions
+        function openModal() {
+            isEditMode = false;
+            currentImageBase64 = null;
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-book-medical"></i> Tambah Koleksi Baru';
+            document.getElementById('saveBtn').innerHTML = '<i class="fas fa-save"></i> Simpan';
+            document.getElementById('editBookId').value = '';
+            document.getElementById('addBookForm').reset();
+            document.getElementById('imagePreview').classList.remove('show');
+            
+            document.getElementById('addModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openEditModal(book) {
+            isEditMode = true;
+            currentImageBase64 = null;
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Koleksi';
+            document.getElementById('saveBtn').innerHTML = '<i class="fas fa-save"></i> Update';
+            
+            document.getElementById('editBookId').value = book.id;
+            document.getElementById('bookTitle').value = book.title;
+            document.getElementById('bookAuthor').value = book.author;
+            document.getElementById('bookYear').value = book.year;
+            document.getElementById('bookCategory').value = book.category;
+            
+            // Show current image if exists
+            const preview = document.getElementById('imagePreview');
+            if (book.cover && !book.cover.includes('unsplash')) {
+                preview.src = book.cover;
+                preview.classList.add('show');
+            } else {
+                preview.classList.remove('show');
+            }
+            
+            document.getElementById('addModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('addModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            document.getElementById('addBookForm').reset();
+            document.getElementById('imagePreview').classList.remove('show');
+            currentImageBase64 = null;
+            isEditMode = false;
+        }
+
+        // Edit Book
+        function editBook(id) {
+            const book = books.find(b => b.id === id);
+            if (book) {
+                openEditModal(book);
+            }
+        }
+
+        // Delete Book
+        function deleteBook(id) {
+            const book = books.find(b => b.id === id);
+            if (book) {
+                deleteBookId = id;
+                document.getElementById('deleteBookTitle').textContent = book.title;
+                document.getElementById('deleteModal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            deleteBookId = null;
+        }
+
+        function confirmDelete() {
+            if (deleteBookId) {
+                books = books.filter(b => b.id !== deleteBookId);
+                saveToLocalStorage();
+                applyFilters(false);
+                closeDeleteModal();
+                showToast('Buku berhasil dihapus!', 'error');
+            }
+        }
+
+        // Save book function (Add or Edit)
+        function saveBook(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('bookTitle').value;
+            const author = document.getElementById('bookAuthor').value;
+            const year = document.getElementById('bookYear').value;
+            const category = document.getElementById('bookCategory').value;
+            const editId = document.getElementById('editBookId').value;
+            
+            const coverImages = {
+                'Manajemen': 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=200',
+                'Sumber Daya': 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=200',
+                'Self-Development': 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=200',
+                'Teknologi': 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=200',
+                'Fiksi': 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=200',
+                'Non-Fiksi': 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=200',
+                'Lainnya': 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=200'
+            };
+            
+            const cover = currentImageBase64 || coverImages[category] || coverImages['Lainnya'];
+            
+            if (isEditMode && editId) {
+                // Edit existing book
+                const bookIndex = books.findIndex(b => b.id === parseInt(editId));
+                if (bookIndex !== -1) {
+                    books[bookIndex].title = title;
+                    books[bookIndex].author = author;
+                    books[bookIndex].year = year;
+                    books[bookIndex].category = category;
+                    if (currentImageBase64) {
+                        books[bookIndex].cover = currentImageBase64;
+                        books[bookIndex].fullCover = currentImageBase64;
+                    }
+                    
+                    showToast('Buku berhasil diupdate!', 'success');
+                }
+            } else {
+                // Add new book
+                const newBook = {
+                    id: Date.now(),
+                    title: title,
+                    author: author,
+                    year: year,
+                    category: category,
+                    cover: cover,
+                    fullCover: cover
+                };
+                
+                books.push(newBook);
+                showToast('Buku berhasil ditambahkan!', 'success');
+            }
+            
+            saveToLocalStorage();
+            applyFilters(false);
+            closeModal();
+        }
+
+        // Export data to JSON
+        function exportData() {
+            const dataStr = JSON.stringify(books, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `perpustakaan-data-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('Data berhasil diexport!', 'success');
+        }
+
+        // Import data from JSON
+        function importData(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedBooks = JSON.parse(e.target.result);
+                    if (Array.isArray(importedBooks)) {
+                        books = importedBooks;
+                        saveToLocalStorage();
+                        applyFilters();
+                        showToast('Data berhasil diimport!', 'success');
+                    } else {
+                        throw new Error('Format tidak valid');
+                    }
+                } catch (error) {
+                    showToast('Gagal mengimport data! Format file salah.', 'error');
+                }
+            };
+            reader.readAsText(file);
+            input.value = '';
+        }
+
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = {
+                success: 'check-circle',
+                error: 'exclamation-circle',
+                info: 'info-circle'
+            };
+            
+            toast.innerHTML = `
+                <i class="fas fa-${icons[type]}"></i>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('hiding');
+                setTimeout(() => {
+                    container.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('addModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) closeDeleteModal();
+        });
+    </script>
+
+</body>
+</html>
