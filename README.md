@@ -156,7 +156,7 @@ Proyek ini dilisensikan di bawah [MIT License](LICENSE).
 
 Jika ada saran atau menemukan bug, silakan hubungi:
 - GitHub: [@AhnRahmad](https://github.com/AhnRahmad)
-- Email: [tambahkan email Anda]
+- Email: [rahmatbtl12@gmail.com]
 
 ---
 
